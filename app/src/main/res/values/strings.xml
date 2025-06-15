@@ -47,8 +47,12 @@
     <string name="mudar_texto">Mudar Texto</string>
     <string name="mudar_fundo">Mudar fundo</string>
     <string name="compartilhar">Compartilhar</string>
-    <string name="novo_texto">Novo texto</string>
     <string name="salvar">Salvar</string>
+    <string name="novo_texto">Novo texto</string>
     <string name="cor_do_texto">Cor do texto</string>
+    <string name="tam_do_texto">Tamanho do texto</string>
+    <string name="novo_texto_sup">Novo texto superior</string>
+    <string name="cor_do_texto_sup">Cor do texto superior</string>
+    <string name="tam_do_texto_sup">Tamanho do texto superior</string>
     <string name="meme_gerado">Meme gerado</string>
 </resources>

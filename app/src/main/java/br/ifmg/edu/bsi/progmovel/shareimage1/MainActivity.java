@@ -50,12 +50,20 @@ public class MainActivity extends AppCompatActivity {
                         if (intent != null) {
                             String novoTexto = intent.getStringExtra(NovoTextoActivity.EXTRA_NOVO_TEXTO);
                             String novaCor = intent.getStringExtra(NovoTextoActivity.EXTRA_NOVA_COR);
-                            if (novaCor == null) {
+                            String novoTam = intent.getStringExtra(NovoTextoActivity.EXTRA_NOVO_TAM);
+                            boolean toggleTexto = intent.getBooleanExtra(NovoTextoActivity.EXTRA_TOGGLE_TEXTO, false);
+                            if (novaCor == null || novaCor.isEmpty()) {
                                 Toast.makeText(MainActivity.this, "Cor desconhecida. Usando preto no lugar.", Toast.LENGTH_SHORT).show();
                                 novaCor = "BLACK";
                             }
+                            if (novoTam == null || novoTam.isEmpty()) {
+                                Toast.makeText(MainActivity.this, "Tamanho desconhecido. Usando 64 no lugar.", Toast.LENGTH_SHORT).show();
+                                novoTam = "64";
+                            }
+                            memeCreator.setIsTextoSuperior(toggleTexto);
                             memeCreator.setTexto(novoTexto);
                             memeCreator.setCorTexto(Color.parseColor(novaCor.toUpperCase()));
+                            memeCreator.setTamTexto(Float.parseFloat(novoTam));
                             mostrarImagem();
                         }
                     }
@@ -109,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         Bitmap imagemFundo = BitmapFactory.decodeResource(getResources(), R.drawable.fry_meme);
 
-        memeCreator = new MemeCreator("Olá Android!", Color.WHITE, imagemFundo, getResources().getDisplayMetrics());
+        memeCreator = new MemeCreator("Olá Android!", Color.WHITE, 64.f, imagemFundo, getResources().getDisplayMetrics());
         mostrarImagem();
     }
 

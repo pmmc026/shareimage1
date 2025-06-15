@@ -14,15 +14,22 @@ import android.util.DisplayMetrics;
  */
 public class MemeCreator {
     private String texto;
+    private String textoSuperior;
     private int corTexto;
+    private int corTextoSuperior;
+    private float tamTexto;
+    private float tamTextoSuperior;
+    private boolean isTextoSuperior; // escolher o texto a ser editado, false é o texto inferior e true o superior.
     private Bitmap fundo;
     private DisplayMetrics displayMetrics;
     private Bitmap meme;
     private boolean dirty; // se true, significa que o meme precisa ser recriado.
 
-    public MemeCreator(String texto, int corTexto, Bitmap fundo, DisplayMetrics displayMetrics) {
+    public MemeCreator(String texto, int corTexto, float tamTexto, Bitmap fundo, DisplayMetrics displayMetrics) {
         this.texto = texto;
         this.corTexto = corTexto;
+        this.tamTexto = tamTexto;
+        isTextoSuperior = false;
         this.fundo = fundo;
         this.displayMetrics = displayMetrics;
         this.meme = criarImagem();
@@ -33,8 +40,16 @@ public class MemeCreator {
         return texto;
     }
 
+    public String getTextoSuperior() {
+        return textoSuperior;
+    }
+
     public void setTexto(String texto) {
-        this.texto = texto;
+        if (isTextoSuperior) {
+            this.textoSuperior = texto;
+        } else {
+            this.texto = texto;
+        }
         dirty = true;
     }
 
@@ -43,7 +58,37 @@ public class MemeCreator {
     }
 
     public void setCorTexto(int corTexto) {
-        this.corTexto = corTexto;
+        if (isTextoSuperior) {
+            this.corTextoSuperior = corTexto;
+        } else {
+            this.corTexto = corTexto;
+        }
+        dirty = true;
+    }
+
+    public float getTamTexto() {
+        return tamTexto;
+    }
+
+    public float getTamTextoSuperior() {
+        return tamTextoSuperior;
+    }
+
+    public void setTamTexto(float tamTexto) {
+        if (isTextoSuperior) {
+            this.tamTextoSuperior = tamTexto;
+        } else {
+            this.tamTexto = tamTexto;
+        }
+        dirty = true;
+    }
+
+    public boolean isTextoSuperior() {
+        return isTextoSuperior;
+    }
+
+    public void setIsTextoSuperior(boolean toggleTexto) {
+        this.isTextoSuperior = toggleTexto;
         dirty = true;
     }
 
@@ -89,14 +134,18 @@ public class MemeCreator {
 
         paint.setColor(corTexto);
         paint.setAntiAlias(true);
-        paint.setTextSize(64.f);
+        paint.setTextSize(getTamTexto());
         paint.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
-        // desenhar texto em cima
-        //canvas.drawText(texto, (width / 2.f), (height * 0.15f), paint);
-
         // desenhar texto embaixo
         canvas.drawText(texto, (width / 2.f), (height * 0.9f), paint);
+        if (getTextoSuperior() != null) {
+            paint.setColor(corTexto);
+            paint.setTextSize(getTamTextoSuperior());
+            // desenhar texto em cima
+            canvas.drawText(getTextoSuperior(), (width / 2.f), (height * 0.15f), paint);
+        }
+
         return bitmap;
     }
 }
