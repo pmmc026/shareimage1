@@ -15,6 +15,10 @@ import android.util.DisplayMetrics;
 public class MemeCreator {
     private String texto;
     private String textoSuperior;
+    private int textoX;
+    private int textoSuperiorX;
+    private int textoY;
+    private int textoSuperiorY;
     private int corTexto;
     private int corTextoSuperior;
     private float tamTexto;

@@ -1,6 +1,7 @@
 package br.ifmg.edu.bsi.progmovel.shareimage1;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -13,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private MemeCreator memeCreator;
+    private boolean allowMovement;
     private final ActivityResultLauncher<Intent> startNovoTexto = registerForActivityResult(new StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -109,16 +113,39 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.imageView);
+        allowMovement = false;
 
         Bitmap imagemFundo = BitmapFactory.decodeResource(getResources(), R.drawable.fry_meme);
 
         memeCreator = new MemeCreator("Olá Android!", Color.WHITE, 64.f, imagemFundo, getResources().getDisplayMetrics());
         mostrarImagem();
+
+        imageView.setOnLongClickListener(e -> {
+            Toast.makeText(getApplicationContext(), "long click", Toast.LENGTH_LONG).show();
+            Log.d("MEMECREATOR", "Long pressed");
+            allowMovement = true;
+            return true;
+        });
+
+        if (allowMovement) {
+            imageView.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    int eixoLargura = imageView.getWidth();
+                    int eixoAltura = imageView.getHeight();
+                    float x = event.getX();
+                    float y = event.getY();
+                    float novoX = x / eixoLargura;
+                    float novoY = y / eixoLargura;
+                }
+                return true;
+            });
+        }
     }
 
     public void iniciarMudarTexto(View v) {
