@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         Bitmap imagemFundo = BitmapFactory.decodeResource(getResources(), templates[templateAtual]);
 
-        memeCreator = new MemeCreator("Olá Android!", Color.WHITE, 64.f, imagemFundo, getResources().getDisplayMetrics());
+        memeCreator = new MemeCreator("Mussum Ipsum", Color.WHITE, 64.f, imagemFundo, getResources().getDisplayMetrics());
         mostrarImagem();
 
         imageView.setOnTouchListener((v, event) -> {
