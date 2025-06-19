@@ -15,6 +15,10 @@ import android.util.DisplayMetrics;
 public class MemeCreator {
     private String texto;
     private String textoSuperior;
+    private float textoX;
+    private float textoSuperiorX;
+    private float textoY;
+    private float textoSuperiorY;
     private int corTexto;
     private int corTextoSuperior;
     private float tamTexto;
@@ -29,6 +33,10 @@ public class MemeCreator {
         this.texto = texto;
         this.corTexto = corTexto;
         this.tamTexto = tamTexto;
+        this.textoX = -1;
+        this.textoY = -1;
+        this.textoSuperiorX = -1;
+        this.textoSuperiorY = 1;
         isTextoSuperior = false;
         this.fundo = fundo;
         this.displayMetrics = displayMetrics;
@@ -49,6 +57,39 @@ public class MemeCreator {
             this.textoSuperior = texto;
         } else {
             this.texto = texto;
+        }
+        dirty = true;
+    }
+
+    public float getTextoX() {
+        return textoX;
+    }
+
+    public float getTextoSuperiorX() {
+        return textoSuperiorX;
+    }
+
+    public void setTextoX(float x) {
+        if (isTextoSuperior) {
+            this.textoSuperiorX = x;
+        } else {
+            this.textoX = x;
+        }
+        dirty = true;
+    }
+
+    public float getTextoY() {
+        return textoY;
+    }
+
+    public float getTextoSuperiorY() {
+        return textoSuperiorY;
+    }
+    public void setTextoY(float y) {
+        if (isTextoSuperior) {
+            this.textoSuperiorY = y;
+        } else {
+            this.textoY = y;
         }
         dirty = true;
     }
@@ -138,12 +179,22 @@ public class MemeCreator {
         paint.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
         // desenhar texto embaixo
-        canvas.drawText(texto, (width / 2.f), (height * 0.9f), paint);
+        if (getTextoX() > -1 && getTextoY() > -1) {
+            canvas.drawText(texto, getTextoX(), getTextoY(), paint);
+        } else {
+            // texto na posição default caso set não tenha acontecido ainda
+            canvas.drawText(texto, (width / 2.f), (height * 0.9f), paint);
+        }
         if (getTextoSuperior() != null) {
             paint.setColor(corTexto);
             paint.setTextSize(getTamTextoSuperior());
             // desenhar texto em cima
-            canvas.drawText(getTextoSuperior(), (width / 2.f), (height * 0.15f), paint);
+            if (getTextoSuperiorX() > -1 && getTextoSuperiorY() > -1) {
+                canvas.drawText(getTextoSuperior(), getTextoSuperiorX(), getTextoSuperiorY(), paint);
+            } else {
+                // texto na posição default caso set não tenha acontecido ainda
+                canvas.drawText(getTextoSuperior(), (width / 2.f), (height * 0.15f), paint);
+            }
         }
 
         return bitmap;
