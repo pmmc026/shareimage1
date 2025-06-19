@@ -119,12 +119,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.imageView);
+        float[] ultimoToqueXY = new float[2];
         allowMovement = false;
 
         Bitmap imagemFundo = BitmapFactory.decodeResource(getResources(), R.drawable.fry_meme);
 
         memeCreator = new MemeCreator("Olá Android!", Color.WHITE, 64.f, imagemFundo, getResources().getDisplayMetrics());
         mostrarImagem();
+
+        imageView.setOnTouchListener((v, event) -> {
+            if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                Toast.makeText(getApplicationContext(), "touch", Toast.LENGTH_LONG).show();
+                Log.d("MEMECREATOR", "Touch me softer");
+                ultimoToqueXY[0] = event.getX();
+                ultimoToqueXY[1] = event.getY();
+            }
+            return false;
+        });
 
         imageView.setOnLongClickListener(e -> {
             Toast.makeText(getApplicationContext(), "long click", Toast.LENGTH_LONG).show();
@@ -133,19 +144,18 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        if (allowMovement) {
-            imageView.setOnTouchListener((v, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    int eixoLargura = imageView.getWidth();
-                    int eixoAltura = imageView.getHeight();
-                    float x = event.getX();
-                    float y = event.getY();
-                    float novoX = x / eixoLargura;
-                    float novoY = y / eixoLargura;
-                }
-                return true;
-            });
-        }
+        imageView.setOnClickListener((v) -> {
+            if (allowMovement) {
+                int eixoLargura = imageView.getWidth();
+                int eixoAltura = imageView.getHeight();
+                float x = ultimoToqueXY[0];
+                float y = ultimoToqueXY[1];
+                memeCreator.setTextoX(x);
+                memeCreator.setTextoY(y);
+                mostrarImagem();
+                allowMovement = false;
+            }
+        });
     }
 
     public void iniciarMudarTexto(View v) {
