@@ -55,4 +55,7 @@
     <string name="cor_do_texto_sup">Cor do texto superior</string>
     <string name="tam_do_texto_sup">Tamanho do texto superior</string>
     <string name="meme_gerado">Meme gerado</string>
+    <string name="editar">Texto a editar</string>
+    <string name="inferior">Inferior</string>
+    <string name="superior">Superior</string>
 </resources>

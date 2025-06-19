@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private MemeCreator memeCreator;
+    int templateAtual = 0;
+    private int[] templates = {R.drawable.fry_meme, R.drawable.aliens_meme, R.drawable.butterfly_meme, R.drawable.buzz_meme, R.drawable.antonio_meme};
     private boolean allowMovement;
     private final ActivityResultLauncher<Intent> startNovoTexto = registerForActivityResult(new StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -122,15 +124,13 @@ public class MainActivity extends AppCompatActivity {
         float[] ultimoToqueXY = new float[2];
         allowMovement = false;
 
-        Bitmap imagemFundo = BitmapFactory.decodeResource(getResources(), R.drawable.fry_meme);
+        Bitmap imagemFundo = BitmapFactory.decodeResource(getResources(), templates[templateAtual]);
 
         memeCreator = new MemeCreator("Olá Android!", Color.WHITE, 64.f, imagemFundo, getResources().getDisplayMetrics());
         mostrarImagem();
 
         imageView.setOnTouchListener((v, event) -> {
             if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                Toast.makeText(getApplicationContext(), "touch", Toast.LENGTH_LONG).show();
-                Log.d("MEMECREATOR", "Touch me softer");
                 ultimoToqueXY[0] = event.getX();
                 ultimoToqueXY[1] = event.getY();
             }
@@ -182,6 +182,17 @@ public class MainActivity extends AppCompatActivity {
         startImagemFundo.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ImageOnly.INSTANCE)
                 .build());
+    }
+
+    public void mudarTemplate(View v) {
+        if (templateAtual >= templates.length - 1) {
+            templateAtual = 0;
+        } else {
+            templateAtual++;
+        }
+        Bitmap background = BitmapFactory.decodeResource(getResources(), templates[templateAtual]);
+        memeCreator.setFundo(background);
+        mostrarImagem();
     }
 
     public void compartilhar(View v) {

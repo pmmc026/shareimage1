@@ -182,6 +182,7 @@ public class MemeCreator {
         if (getTextoX() > -1 && getTextoY() > -1) {
             canvas.drawText(texto, getTextoX(), getTextoY(), paint);
         } else {
+            // texto na posição default caso set não tenha acontecido ainda
             canvas.drawText(texto, (width / 2.f), (height * 0.9f), paint);
         }
         if (getTextoSuperior() != null) {
@@ -191,6 +192,7 @@ public class MemeCreator {
             if (getTextoSuperiorX() > -1 && getTextoSuperiorY() > -1) {
                 canvas.drawText(getTextoSuperior(), getTextoSuperiorX(), getTextoSuperiorY(), paint);
             } else {
+                // texto na posição default caso set não tenha acontecido ainda
                 canvas.drawText(getTextoSuperior(), (width / 2.f), (height * 0.15f), paint);
             }
         }
